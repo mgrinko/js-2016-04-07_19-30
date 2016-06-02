@@ -1,5 +1,19 @@
 'use strict';
 
+var template = `
+  <button class="arrow prev">⇦</button>
+  <div class="gallery">
+    <ul class="images">
+
+      <% images.forEach(function(imageLink) { %>
+        <li><img src="<%= imageLink %>"></li>
+      <% }); %>
+
+    </ul>
+  </div>
+  <button class="arrow next">⇨</button>
+`;
+
 var images = [
   'https://js.cx/carousel/1.png',
   'https://js.cx/carousel/2.png',
@@ -41,23 +55,15 @@ class Carousel {
   }
 
   _render(images) {
-    var itemsHTML = images.map(this._createItemHtml).join('');
-
     this._el.classList.add('carousel');
-    var test = '<div>' + itemsHTML + '</div>';
-    this._el.innerHTML = `
-        <button class="arrow prev">⇦</button>
-        <div class="gallery">
-          <ul class="images">${itemsHTML}</ul>
-        </div>
-        <button class="arrow next">⇨</button>
-      `;
+
+    var compiledTemplate = _.template(template);
+
+    this._el.innerHTML = compiledTemplate({
+      images: images
+    });
 
     this._el.querySelector('.gallery').style.width = this._imageWidth * this._showCount + 'px';
-  }
-
-  _createItemHtml(link) {
-    return `<li><img src="${link}"></li>`;
   }
 }
 
