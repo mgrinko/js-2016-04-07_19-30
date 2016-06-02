@@ -1,18 +1,6 @@
 'use strict';
 
-var template = `
-  <button class="arrow prev">⇦</button>
-  <div class="gallery">
-    <ul class="images">
-
-      <% images.forEach(function(imageLink) { %>
-        <li><img src="<%= imageLink %>"></li>
-      <% }); %>
-
-    </ul>
-  </div>
-  <button class="arrow next">⇨</button>
-`;
+var template = document.getElementById('carousel-template').innerHTML;
 
 var images = [
   'https://js.cx/carousel/1.png',

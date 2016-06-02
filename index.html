@@ -13,6 +13,20 @@
 <div id="carousel1"></div>
 <div id="carousel2"></div>
 
+<script type="qweqwe" id="carousel-template">
+  <button class="arrow prev">⇦</button>
+  <div class="gallery">
+    <ul class="images">
+
+      <% images.forEach(function(imageLink) { %>
+        <li><img src="<%= imageLink %>"></li>
+      <% }); %>
+
+    </ul>
+  </div>
+  <button class="arrow next">⇨</button>
+</script>
+
 </body>
 
 </html>
