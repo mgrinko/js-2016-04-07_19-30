@@ -26,11 +26,11 @@
 
           <!--Sidebar content-->
           <div class="col-md-2">
-            <div>
+            <div data-component="filter">
               Search: <input type="text">
             </div>
 
-            <div>
+            <div data-component="sorter">
               Sort by:
               <select>
                 <option value="name">Alphabetical</option>
@@ -42,9 +42,9 @@
           <!--Body content-->
           <div class="col-md-10">
 
-            <div class="phoneCatalogue"></div>
+            <div data-component="phoneCatalogue"></div>
 
-            <div class="phoneViewer">
+            <div data-component="phoneViewer">
               <button>Back</button>
 
               <div class="phone-images">
