@@ -159,7 +159,7 @@ let phones = [
 class Page {
   constructor(options) {
     this._el = options.element;
-    this._phones = this._getPhones();
+    this._phones = this._getPhonesByPattern();
 
     this._filter = new Filter({
       element: this._el.querySelector('[data-component="filter"]')
@@ -181,14 +181,30 @@ class Page {
     this._viewer.hide();
 
 
-    this._catalogue.addEventListener('phoneSelected', this._onPhonesSelected.bind(this))
+    this._catalogue.getElement()
+      .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
+
+    this._filter.getElement()
+      .addEventListener('valueChanged', this._onValueChanged.bind(this));
   }
 
-  _getPhones() {
-    return phones;
+  _getPhonesByPattern(pattern = '') {
+    pattern = pattern.toLowerCase();
+
+    return phones.filter(function(phone) {
+      let lowerPhoneName = phone.name.toLowerCase();
+
+      return lowerPhoneName.indexOf(pattern) !== -1;
+    });
   }
 
   _onPhonesSelected(event) {
+    alert(event.detail);
+  }
 
+  _onValueChanged(event) {
+    let phones = this._getPhonesByPattern(event.detail);
+
+    this._catalogue.render(phones);
   }
 }

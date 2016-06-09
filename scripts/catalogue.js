@@ -24,6 +24,10 @@ class Catalogue {
     this._el.addEventListener('click', this._onPhoneClick.bind(this))
   }
 
+  getElement() {
+    return this._el;
+  }
+
   render(arrayOfPhones) {
     this._el.innerHTML = _.template(catalogueTemplate)({
       phones: arrayOfPhones
@@ -47,4 +51,6 @@ class Catalogue {
 
     this._el.dispatchEvent(event);
   }
+
+
 }
