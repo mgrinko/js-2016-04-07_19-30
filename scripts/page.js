@@ -159,6 +159,7 @@ let phones = [
 class Page {
   constructor(options) {
     this._el = options.element;
+    this._phones = this._getPhones();
 
     this._filter = new Filter({
       element: this._el.querySelector('[data-component="filter"]')
@@ -176,7 +177,18 @@ class Page {
       element: this._el.querySelector('[data-component="phoneViewer"]')
     });
 
-    this._catalogue.render(phones);
+    this._catalogue.render(this._phones);
     this._viewer.hide();
+
+
+    this._catalogue.addEventListener('phoneSelected', this._onPhonesSelected.bind(this))
+  }
+
+  _getPhones() {
+    return phones;
+  }
+
+  _onPhonesSelected(event) {
+
   }
 }
