@@ -5,12 +5,12 @@ const catalogueTemplate = `
 
     <% phones.forEach(function(phone) {%>
 
-      <li class="thumbnail phone-listing" data-element="phone" data-phone-id="<%= phone.id %>">
-        <a href="#/phones/<%= phone.id %>" class="thumb" data-element="phoneLink">
+      <li class="thumbnail phone-item" data-element="phone" data-phone-id="<%= phone.id %>">
+        <a class="thumb phone-item__img" href="#/phones/<%= phone.id %>" data-element="phoneLink">
           <img src="<%= phone.imageUrl %>" alt="<%- phone.name %>">
         </a>
-        <a href="#/phones/<%= phone.id %>" data-element="phoneLink"><%= phone.name %></a>
-        <p><%- phone.snippet %></p>
+        <a class="phone-item__title" href="#/phones/<%= phone.id %>" data-element="phoneLink"><%= phone.name %></a>
+        <p class="phone-item__description"><%- phone.snippet %></p>
       </li>
 
     <% }); %>
