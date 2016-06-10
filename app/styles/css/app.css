@@ -156,21 +156,22 @@ input, select {
     background: transparent;
     border: .1rem solid;
     border-color: transparent transparent #ababab transparent;
+    color: #2c87ce;
     padding: .3rem .5rem;
     width: 100%;
     transition: all 0.4s ease; }
-    /* line 34, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+    /* line 35, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
     .app__sidebar .sidebar__field input:hover {
       background: #ffffff; }
-    /* line 38, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+    /* line 39, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
     .app__sidebar .sidebar__field input:focus {
       background: #ffffff;
       border-bottom-color: #2c87ce;
       outline: none; }
-  /* line 46, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+  /* line 47, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
   .app__sidebar .sidebar__select {
     padding-top: .5rem; }
-    /* line 49, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+    /* line 50, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
     .app__sidebar .sidebar__select > select {
       width: 100%; }
 
