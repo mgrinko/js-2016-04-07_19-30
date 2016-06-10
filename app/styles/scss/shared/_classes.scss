@@ -1,0 +1,30 @@
+//---------------------------------------------------
+// Classes
+//---------------------------------------------------
+
+// Content
+// --------------------------------------------------
+.prime-btn {
+  background: $primeGreen;
+  border-radius: $buttonBorderRadius;
+  color: $moonBrown;
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all .3s ease;
+  padding: 1.5rem .5rem;
+  width: 24.1rem;
+
+  &:hover {
+    background: darken($primeGreen, 5%);
+    cursor: pointer;
+  }
+
+  &:active {
+    box-shadow: 0 -.2rem $primeWhite;
+    transition: all 0s ease;
+  }
+}

@@ -1,0 +1,67 @@
+img {
+    &.phone {
+        float: left;
+        margin-right: 3em;
+        margin-bottom: 2em;
+        background-color: white;
+        padding: 2em;
+        height: 40rem;
+        width: 40rem;
+        display: none;
+
+        &:first-child {
+            display: block;
+        }
+    }
+}
+
+
+ul {
+    &.phone-thumbs {
+        margin: 0;
+        list-style: none;
+
+        li {
+            border: 1px solid black;
+            display: inline-block;
+            margin: 1em;
+            background-color: white;
+        }
+
+        img {
+            height: 10rem;
+            width: 10rem;
+            padding: 1em;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    &.specs {
+        clear: both;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        & > li{
+            display: inline-block;
+            width: 20rem;
+            vertical-align: top;
+
+            & > span{
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+        }
+
+        dt {
+            font-weight: bold;
+        }
+    }
+}
+
+h1 {
+    border-bottom: .1rem solid $oceanGrey;
+}

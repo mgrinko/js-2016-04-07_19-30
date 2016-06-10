@@ -1,0 +1,187 @@
+//---------------------------------------------------
+// Mixins
+//---------------------------------------------------
+
+// Content
+// --------------------------------------------------
+
+/// Cross browser box-sizing
+/// @param $box-model [border-box] - type of box-model
+@mixin boxSizing($box-model: border-box) {
+  -webkit-box-sizing: $box-model;
+  -moz-box-sizing: $box-model;
+  box-sizing: $box-model;
+}
+
+/// Media queries
+@mixin screen($minWidth, $maxWidth) {
+    // use plus '1' for don't overlap
+    @media screen and (min-width: $minWidth + 1) and (max-width: $maxWidth) {
+        @content;
+    }
+}
+
+@mixin maxScreen($maxWidth) {
+    @media screen and (max-width: $maxWidth) {
+        @content;
+    }
+}
+
+@mixin minScreen($minWidth) {
+    // use plus '1' for don't overlap
+    @media screen and (min-width: $minWidth + 1) {
+        @content;
+    }
+}
+
+/// Breakpoints
+
+/// Phone breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_S: 480px;
+$small: $screen_S;
+
+/// Large phone breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_M: 768px;
+$middle: $screen_M;
+
+/// Tablet breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_L: 1024px;
+$large: $screen_L;
+
+/// Laptop breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_XL: 1280px;
+$extraLarge: $screen_XL;
+
+/// Monitor breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_XXL: 1440px;
+$doubleExtraLarge: $screen_XXL;
+
+/// HD monitor breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_HD: 1920px;
+$highDefinition: $screen_HD;
+
+/// Retina monitor breakpoint
+/// @type Number
+/// @group Breakpoints
+$screen_Retina: 2560px;
+$retina: 2560px;
+
+/// Clear fix
+@mixin pie-clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+// Centered container element
+@mixin containerCentred($paddingRight: 0, $paddingLeft: 0, $maxWidth: false) {
+  @if $maxWidth != false {
+    max-width: $maxWidth + $paddingRight + $paddingLeft;
+    .ie8 & {
+      max-width: $maxWidth;
+    }
+  }
+
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: $paddingRight;
+  padding-left: $paddingLeft;
+
+  @include pie-clearfix();
+}
+
+/// Function to convert px size to rem
+///
+/// @param {Number} $size - Size in pixels to convert to rem
+@function calculate-rem($size) {
+    $rem-size: $size / 10px;
+
+    @return #{$rem-size}rem;
+}
+
+/// Mixin to output rem font-size with px fallback
+///
+/// @param {Number} $size - Element’s `font-size` in pixels
+///
+/// @example scss - Usage
+///     h1 {
+///         @include font-size(32px);
+///     }
+///
+/// @example css - CSS output
+///     h1 {
+///         font-size: 32px;
+///         font-size: 2rem;
+///     }
+// scss-lint:disable VariableForProperty, DuplicateProperty
+@mixin font-size($size) {
+    font-size: $size;
+    font-size: calculate-rem($size); /* stylelint-disable-line declaration-block-no-duplicate-properties */
+}
+
+/// Mixin for applying transition action
+///
+/// @param {String} $transition [all] - property to transition, defaults to all
+/// @param {Number} $time [.4s] - Amount of time for the transition to complete, defaults to .4s
+/// @param {String} $animation [ease] - easing type for transition to use, defaults to ease
+///
+/// @example scss - Usage
+///     .Default {
+///         @include transition();
+///     }
+///
+///     .Element {
+///         @include transition(height, 1s, ease-in-out);
+///     }
+///
+/// @example css - CSS output
+///     .Default {
+///         transition: all .4s, ease;
+///     }
+///     .Element {
+///         transition: height 1s ease-in-out;
+///     }
+@mixin transition($transition: all, $time: .4s, $animation: ease) {
+    transition: $transition $time $animation;
+}
+
+/// Mixin for creating linear gradient
+///
+/// @param {Color} $color-start - Starting color for the gradient
+/// @param {Color} $color-stop - Ending color for the gradient
+/// @param {Number|String} $direction [90deg] - direction the gradient show flow, can be in degrees (90deg) or a string ('to right'), defaults to 90deg
+///
+/// @example scss - Usage
+///     .Default {
+///         @include linear-gradient($brand-primary, $brand-secondary);
+///     }
+///
+///     .Element {
+///         @include linear-gradient($brand-primary, $brand-secondary, to left);
+///     }
+///
+/// @example css - CSS output
+///     .Default {
+///         background: linear-gradient(90deg, #2e65b0 0%, #318ecd 100%);
+///     }
+///     .Element {
+///         background: linear-gradient(to left, #2e65b0 0%, #318ecd 100%);
+///     }
+@mixin linear-gradient($color-start, $color-stop, $direction: 90deg) {
+    background: $color-start;
+    background: linear-gradient($direction,  $color-start 0%, $color-stop 100%);
+}
