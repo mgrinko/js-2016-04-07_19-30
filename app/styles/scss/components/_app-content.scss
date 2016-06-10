@@ -82,6 +82,11 @@
             &__description {
                 font-size: 1.4rem;
                 font-weight: 100;
+
+                @include maxScreen($large) {
+                    overflow: auto;
+                    height: 6rem;
+                }
             }
         }
     }

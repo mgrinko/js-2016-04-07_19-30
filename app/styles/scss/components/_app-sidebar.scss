@@ -15,12 +15,19 @@
                 text-align: right;
             }
 
+            &__sorter {
+                @include maxScreen($large) {
+                    margin-bottom: 3rem;
+                }
+            }
+
             &__field {
                 input {
                     background: transparent;
                     border: .1rem solid;
                     border-color: transparent transparent $oceanGrey transparent;
                     padding: .3rem .5rem;
+                    width: 100%;
 
                     @include transition();
 
