@@ -1,0 +1,93 @@
+// app content scss stylesheet
+// -------------------------------------------
+
+.app {
+    &__content {
+        border: .1rem solid;
+        border-color: $opinionGrey transparent $opinionGrey transparent;
+        height: 95vh;
+        overflow: auto;
+
+        & > div {
+            margin-top: 1.5rem;
+        }
+    }
+}
+
+.phone-catalogue {
+    .phone {
+        &-item {
+            height: 11.5rem;
+            padding: 1.5rem;
+
+            &:hover {
+                box-shadow: 0 .1rem .2rem 0 rgba($oceanGrey, .1), 0 .4rem .8rem 0 rgba($oceanGrey, .2);
+
+                @include linear-gradient((lighten($starGrey, 40%)), $primeWhite, to top);
+            }
+
+            &__img {
+                @include transition($time: .2s);
+
+                &:hover {
+                    transform: scale(1.1, 1.1);
+                }
+            }
+
+            &__title {
+                display: inline-block;
+                position: relative;
+
+                @include transition($time: .2s);
+
+                &::before {
+                    content: "\f101";
+                    font: $FontAwesome;
+                    opacity: 0;
+                    position: absolute;
+                    top: .4rem;
+                    left: 2rem;
+
+                    @include transition($time: .2s);
+                }
+
+                &::after {
+                    content: "\f100";
+                    font: $FontAwesome;
+                    opacity: 0;
+                    position: absolute;
+                    top: .4rem;
+                    right: 2rem;
+
+                    @include transition($time: .2s);
+                }
+
+                &:hover {
+                    color: $primeRed;
+                    text-decoration: none;
+                    transform: translate(1.5rem, 0);
+
+                    &::before {
+                        opacity: 1;
+                        left: -1.5rem;
+                    }
+
+                    &::after {
+                        opacity: 1;
+                        right: -1.5rem;
+                    }
+                }
+            }
+
+            &__description {
+                font-size: 1.4rem;
+                font-weight: 100;
+
+                @include maxScreen($large) {
+                    overflow: auto;
+                    height: 6rem;
+                }
+            }
+        }
+    }
+}

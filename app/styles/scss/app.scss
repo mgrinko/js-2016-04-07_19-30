@@ -1,0 +1,39 @@
+// app scss stylesheet
+// -------------------------------------------
+
+// imports
+// -------------------------------------------
+@import "shared/core";
+@import "components/app-sidebar";
+@import "components/app-content";
+@import "components/detailed-view";
+
+body {
+    background: $softGrey;
+    font-family: $FontFamilyBase;
+    font-size: 1.6rem;
+    padding: 2rem;
+}
+
+.js-hidden {
+    display: none;
+}
+
+.phone-images {
+    background-color: white;
+    width: 45rem;
+    height: 45rem;
+    overflow: hidden;
+    position: relative;
+    float: left;
+}
+
+
+
+.thumb {
+    float: left;
+    margin: -0.5em 1em 1.5em 0;
+    padding-bottom: 1em;
+    height: 10rem;
+    width: 10rem;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Phones Catalogue</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js" defer></script>
+
+    <script src="scripts/filter.js"></script>
+    <script src="scripts/sorter.js"></script>
+    <script src="scripts/viewer.js"></script>
+    <script src="scripts/catalogue.js"></script>
+    <script src="scripts/page.js"></script>
+    <script src="scripts/app.js" defer></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="styles/css/app.css">
+</head>
+
+<body>
+
+<div class="app view-container">
+    <div class="view-frame" id="app-container">
+
+        <div class="container-fluid">
+            <div class="row">
+
+                <!--Sidebar content-->
+                <div class="col-md-2 app__sidebar">
+                    <div class="row sidebar__filter" data-component="filter">
+                        <span class="col-xs-2 col-sm-1 col-md-3 sidebar__label">Search: </span>
+                        <span class="col-xs-10 col-sm-11 col-md-9 sidebar__field">
+                            <input type="text" data-element="filterField" placeholder="Type phone model">
+                        </span>
+                    </div>
+
+                    <div class="row sidebar__sorter" data-component="sorter">
+                        <span class="col-xs-2 col-sm-1 col-md-3 sidebar__label">Sort by: </span>
+                        <span class="col-xs-10 col-sm-11 col-md-9 sidebar__select">
+                            <select>
+                                <option value="name">Alphabetical</option>
+                                <option value="age">Newest</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+
+                <!--Body content-->
+                <div class="col-md-10 app__content">
+
+                    <div class="phone-catalogue" data-component="phoneCatalogue"></div>
+
+                    <div class="js-hidden phone-item--detailedView" data-component="phoneViewer">
+                        <button>Back</button>
+
+                        <div class="phone-images">
+                            <img class="phone active" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+                        </div>
+
+                        <h1>Motorola XOOM\u2122 with Wi-Fi</h1>
+                        <h2>motorola-xoom-with-wi-fi</h2>
+
+                        <p>Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android\u2122 3.0
+                            (Honeycomb) \u2014 the Android platform designed specifically for tablets. With its
+                            10.1-inch HD widescreen display, you\u2019ll enjoy HD video in a thin, light, powerful and
+                            upgradeable tablet.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+</html>

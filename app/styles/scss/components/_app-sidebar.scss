@@ -1,0 +1,56 @@
+// app sidebar scss stylesheet
+// -------------------------------------------
+
+.app {
+    &__sidebar {
+        padding-top: 1.5rem;
+
+        .sidebar {
+            &__filter {
+                margin-bottom: 1.5rem;
+            }
+
+            &__label {
+                padding: .6rem 0 .6rem;
+                text-align: right;
+            }
+
+            &__sorter {
+                @include maxScreen($large) {
+                    margin-bottom: 3rem;
+                }
+            }
+
+            &__field {
+                input {
+                    background: transparent;
+                    border: .1rem solid;
+                    border-color: transparent transparent $oceanGrey transparent;
+                    color: $primeBlue;
+                    padding: .3rem .5rem;
+                    width: 100%;
+
+                    @include transition();
+
+                    &:hover {
+                        background: $primeWhite;
+                    }
+
+                    &:focus {
+                        background: $primeWhite;
+                        border-bottom-color: $primeBlue;
+                        outline: none;
+                    }
+                }
+            }
+
+            &__select {
+                padding-top: .5rem;
+
+                & > select {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
