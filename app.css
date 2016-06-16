@@ -1,102 +1,333 @@
-/* app css stylesheet */
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,700);
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css);
+/* line 7, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
+/* line 30, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+html {
+  font-size: 10px; }
+
+/* line 34, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+html, body {
+  height: 100%;
+  min-height: 100%; }
+
+/* line 39, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
 body {
-  padding-top: 20px;
-}
+  line-height: 1; }
 
-.js-hidden {
-  display: none;
-}
+/* line 43, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+*:before,
+*:after {
+  display: inline-block;
+  vertical-align: middle; }
 
-.phone-images {
-  background-color: white;
-  width: 450px;
-  height: 450px;
-  overflow: hidden;
+/* line 49, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+/* line 54, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+nav ul {
+  list-style: none; }
+
+/* line 58, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+blockquote, q {
+  quotes: none; }
+
+/* line 62, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+/* line 68, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-decoration: none; }
+
+/* change colours to suit your needs */
+/* line 78, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none; }
+
+/* change colours to suit your needs */
+/* line 85, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold; }
+
+/* line 92, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+del {
+  text-decoration: line-through; }
+
+/* line 96, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help; }
+
+/* line 101, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/* change border colour to suit your needs */
+/* line 107, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0; }
+
+/* line 116, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_reset.scss */
+input, select {
+  vertical-align: middle; }
+
+/* line 7, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_classes.scss */
+.prime-btn {
+  background: #8ae6cf;
+  border-radius: 3rem;
+  color: #2c303d;
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all .3s ease;
+  padding: 1.5rem .5rem;
+  width: 24.1rem; }
+/* line 21, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_classes.scss */
+.prime-btn:hover {
+  background: #75e2c6;
+  cursor: pointer; }
+/* line 26, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/shared/_classes.scss */
+.prime-btn:active {
+  box-shadow: 0 -0.2rem #ffffff;
+  transition: all 0s ease; }
+
+/* line 5, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar {
+  padding-top: 1.5rem; }
+/* line 9, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__filter {
+  margin-bottom: 1.5rem; }
+/* line 13, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__label {
+  padding: .6rem 0 .6rem;
+  text-align: right; }
+@media screen and (max-width: 1024px) {
+  /* line 18, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+  .app__sidebar .sidebar__sorter {
+    margin-bottom: 3rem; } }
+/* line 25, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__field input {
+  background: transparent;
+  border: .1rem solid;
+  border-color: transparent transparent #ababab transparent;
+  color: #2c87ce;
+  padding: .3rem .5rem;
+  width: 100%;
+  transition: all 0.4s ease; }
+/* line 35, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__field input:hover {
+  background: #ffffff; }
+/* line 39, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__field input:focus {
+  background: #ffffff;
+  border-bottom-color: #2c87ce;
+  outline: none; }
+/* line 47, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__select {
+  padding-top: .5rem; }
+/* line 50, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-sidebar.scss */
+.app__sidebar .sidebar__select > select {
+  width: 100%; }
+
+/* line 5, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.app__content {
+  border: .1rem solid;
+  border-color: #eaf2f4 transparent #eaf2f4 transparent;
+  height: 95vh;
+  overflow: auto; }
+/* line 11, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.app__content > div {
+  margin-top: 1.5rem; }
+
+/* line 19, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item {
+  height: 11.5rem;
+  padding: 1.5rem; }
+/* line 23, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item:hover {
+  box-shadow: 0 0.1rem 0.2rem 0 rgba(171, 171, 171, 0.1), 0 0.4rem 0.8rem 0 rgba(171, 171, 171, 0.2);
+  background: #ededed;
+  background: linear-gradient(to top, #ededed 0%, #ffffff 100%); }
+/* line 29, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__img {
+  transition: all 0.2s ease; }
+/* line 32, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__img:hover {
+  transform: scale(1.1, 1.1); }
+/* line 37, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__title {
+  display: inline-block;
   position: relative;
-  float: left;
-}
+  transition: all 0.2s ease; }
+/* line 43, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__title::before {
+  content: "\f101";
+  font: normal normal normal 1.4rem/1 "FontAwesome";
+  opacity: 0;
+  position: absolute;
+  top: .4rem;
+  left: 2rem;
+  transition: all 0.2s ease; }
+/* line 54, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__title::after {
+  content: "\f100";
+  font: normal normal normal 1.4rem/1 "FontAwesome";
+  opacity: 0;
+  position: absolute;
+  top: .4rem;
+  right: 2rem;
+  transition: all 0.2s ease; }
+/* line 65, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__title:hover {
+  color: #ce2c52;
+  text-decoration: none;
+  transform: translate(1.5rem, 0); }
+/* line 70, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__title:hover::before {
+  opacity: 1;
+  left: -1.5rem; }
+/* line 75, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__title:hover::after {
+  opacity: 1;
+  right: -1.5rem; }
+/* line 82, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+.phone-catalogue .phone-item__description {
+  font-size: 1.4rem;
+  font-weight: 100; }
+@media screen and (max-width: 1024px) {
+  /* line 82, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_app-content.scss */
+  .phone-catalogue .phone-item__description {
+    overflow: auto;
+    height: 6rem; } }
 
-.phones {
-  list-style: none;
-}
-
-.thumb {
-  float: left;
-  margin: -0.5em 1em 1.5em 0;
-  padding-bottom: 1em;
-  height: 100px;
-  width: 100px;
-}
-
-.phones li {
-  clear: both;
-  height: 115px;
-  padding-top: 15px;
-}
-
-/** Detail View **/
+/* line 2, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 img.phone {
   float: left;
   margin-right: 3em;
   margin-bottom: 2em;
   background-color: white;
   padding: 2em;
-  height: 400px;
-  width: 400px;
-  display: none;
-}
-
+  height: 40rem;
+  width: 40rem;
+  display: none; }
+/* line 12, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 img.phone:first-child {
-  display: block;
-}
+  display: block; }
 
-
+/* line 20, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 ul.phone-thumbs {
   margin: 0;
-  list-style: none;
-}
-
+  list-style: none; }
+/* line 24, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 ul.phone-thumbs li {
   border: 1px solid black;
   display: inline-block;
   margin: 1em;
-  background-color: white;
-}
-
+  background-color: white; }
+/* line 31, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 ul.phone-thumbs img {
-  height: 100px;
-  width: 100px;
-  padding: 1em;
-}
-
+  height: 10rem;
+  width: 10rem;
+  padding: 1em; }
+/* line 36, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 ul.phone-thumbs img:hover {
-  cursor: pointer;
-}
+  cursor: pointer; }
 
-
+/* line 42, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 ul.specs {
   clear: both;
   margin: 0;
   padding: 0;
-  list-style: none;
-}
-
-ul.specs > li{
+  list-style: none; }
+/* line 48, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
+ul.specs > li {
   display: inline-block;
-  width: 200px;
-  vertical-align: top;
-}
-
-ul.specs > li > span{
+  width: 20rem;
+  vertical-align: top; }
+/* line 53, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
+ul.specs > li > span {
   font-weight: bold;
-  font-size: 1.2em;
-}
-
+  font-size: 1.2em; }
+/* line 59, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 ul.specs dt {
-  font-weight: bold;
-}
+  font-weight: bold; }
 
+/* line 65, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/components/_detailed-view.scss */
 h1 {
-  border-bottom: 1px solid gray;
-}
+  border-bottom: 0.1rem solid #ababab; }
+
+/* line 11, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/app.scss */
+body {
+  background: #fafafa;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1.6rem;
+  padding: 2rem; }
+
+/* line 18, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/app.scss */
+.js-hidden {
+  display: none; }
+
+/* line 22, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/app.scss */
+.phone-images {
+  background-color: white;
+  width: 45rem;
+  height: 45rem;
+  overflow: hidden;
+  position: relative;
+  float: left; }
+
+/* line 33, /Volumes/Media/Work/Education/javascript.ru/PhoneCatalogue/js-2016-04-07_19-30/app/styles/scss/app.scss */
+.thumb {
+  float: left;
+  margin: -0.5em 1em 1.5em 0;
+  padding-bottom: 1em;
+  height: 10rem;
+  width: 10rem; }
+
+/*# sourceMappingURL=maps/app.css.map */
