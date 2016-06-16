@@ -1,21 +1,7 @@
 'use strict';
 
-const catalogueTemplate = `
-  <ul class="phones">
-
-    <% phones.forEach(function(phone) {%>
-
-      <li class="thumbnail phone-item" data-element="phone" data-phone-id="<%= phone.id %>">
-        <a class="thumb phone-item__img" href="#/phones/<%= phone.id %>" data-element="phoneLink">
-          <img src="<%= phone.imageUrl %>" alt="<%- phone.name %>">
-        </a>
-        <a class="phone-item__title" href="#/phones/<%= phone.id %>" data-element="phoneLink"><%= phone.name %></a>
-        <p class="phone-item__description"><%- phone.snippet %></p>
-      </li>
-
-    <% }); %>
-  </ul>
-`;
+const catalogueTemplate = require('raw!./../templates/phoneCatalogue.html');
+const compiledTemplate = require('./../templates/phoneCatalogue.hbs');
 
 class Catalogue {
   constructor(options) {
@@ -29,7 +15,7 @@ class Catalogue {
   }
 
   render(arrayOfPhones) {
-    this._el.innerHTML = _.template(catalogueTemplate)({
+    this._el.innerHTML = compiledTemplate({
       phones: arrayOfPhones
     });
   }
@@ -54,3 +40,5 @@ class Catalogue {
 
 
 }
+
+module.exports = Catalogue;

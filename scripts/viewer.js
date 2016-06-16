@@ -14,3 +14,5 @@ class Viewer {
     this._el.classList.remove('js-hidden');
   }
 }
+
+module.exports = Viewer;

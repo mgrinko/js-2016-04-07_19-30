@@ -1,0 +1,14 @@
+<ul class="phones">
+
+  {{# each phones }}
+    <li class="thumbnail phone-item" data-element="phone" data-phone-id="{{ this.id }}">
+      <a class="thumb phone-item__img" href="#/phones/{{ this.id }}" data-element="phoneLink">
+        <img src="{{ this.imageUrl }}" alt="{{ this.name }}">
+      </a>
+      <a class="phone-item__title" href="#/phones/{{ this.id }}" data-element="phoneLink">{{ this.name }}</a>
+      <p class="phone-item__description">{{ this.snippet }}</p>
+    </li>
+
+  {{/each}}
+
+</ul>
