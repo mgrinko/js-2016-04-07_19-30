@@ -50,7 +50,7 @@ class Page {
   }
 
   _onPhonesSelected(event) {
-    alert(event.detail);
+    this._viewer.render(event.detail);
   }
 
   _onValueChanged(event) {

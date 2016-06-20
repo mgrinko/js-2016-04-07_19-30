@@ -1,22 +1,23 @@
 'use strict';
 
-const catalogueTemplate = require('raw!./../templates/phoneCatalogue.html');
 const compiledTemplate = require('./../templates/phoneCatalogue.hbs');
 
 class Catalogue {
   constructor(options) {
     this._el = options.element;
 
-    this._el.addEventListener('click', this._onPhoneClick.bind(this))
+    this._onPhoneClick = this._onPhoneClick.bind(this);
+
+    this._el.addEventListener('click', this._onPhoneClick);
   }
 
   getElement() {
     return this._el;
   }
 
-  render(arrayOfPhones) {
+  render(phones) {
     this._el.innerHTML = compiledTemplate({
-      phones: arrayOfPhones
+      phones: phones
     });
   }
 
@@ -37,8 +38,6 @@ class Catalogue {
 
     this._el.dispatchEvent(event);
   }
-
-
 }
 
 module.exports = Catalogue;
