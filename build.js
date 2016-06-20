@@ -110,29 +110,20 @@
 	    value: function _loadPhonesByPattern() {
 	      var pattern = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
 	
-	      pattern = pattern.toLowerCase();
-	
-	      var xhr = new XMLHttpRequest();
-	
-	      xhr.open('GET', '/server/data/phones.json', true); // async
-	
-	      xhr.send();
-	
-	      xhr.onload = function () {
-	        var phones = JSON.parse(xhr.responseText);
-	
-	        phones = phones.filter(function (phone) {
-	          var lowerPhoneName = phone.name.toLowerCase();
-	
-	          return lowerPhoneName.indexOf(pattern) !== -1;
-	        });
-	
-	        this._renderPhones(phones);
-	      }.bind(this);
+	      this._sendRequest({
+	        url: '/server/data/phones.json',
+	        success: this._renderPhones.bind(this, pattern.toLowerCase())
+	      });
 	    }
 	  }, {
 	    key: '_renderPhones',
-	    value: function _renderPhones(phones) {
+	    value: function _renderPhones(pattern, phones) {
+	      phones = phones.filter(function (phone) {
+	        var lowerPhoneName = phone.name.toLowerCase();
+	
+	        return lowerPhoneName.indexOf(pattern) !== -1;
+	      });
+	
 	      this._phones = phones;
 	
 	      this._catalogue.render(this._phones);
@@ -142,19 +133,17 @@
 	    value: function _onPhonesSelected(event) {
 	      var phoneId = event.detail;
 	
-	      var xhr = new XMLHttpRequest();
-	
-	      xhr.open('GET', '/server/data/phones/' + phoneId + '.json', true); // async
-	
-	      xhr.send();
-	
-	      xhr.onload = function () {
-	        var phoneDetails = JSON.parse(xhr.responseText);
-	
-	        this._viewer.render(phoneDetails);
-	        this._catalogue.hide();
-	        this._viewer.show();
-	      }.bind(this);
+	      this._sendRequest({
+	        url: '/server/data/phones/' + phoneId + '.json',
+	        success: this._showSelectedPhone.bind(this)
+	      });
+	    }
+	  }, {
+	    key: '_showSelectedPhone',
+	    value: function _showSelectedPhone(phoneDetails) {
+	      this._viewer.render(phoneDetails);
+	      this._catalogue.hide();
+	      this._viewer.show();
 	    }
 	  }, {
 	    key: '_onValueChanged',
@@ -162,6 +151,36 @@
 	      var phones = this._loadPhonesByPattern(event.detail);
 	
 	      this._catalogue.render(phones);
+	    }
+	  }, {
+	    key: '_sendRequest',
+	    value: function _sendRequest(_ref) {
+	      var url = _ref.url;
+	      var _ref$method = _ref.method;
+	      var method = _ref$method === undefined ? 'GET' : _ref$method;
+	      var success = _ref.success;
+	      var _ref$error = _ref.error;
+	      var error = _ref$error === undefined ? console.error : _ref$error;
+	
+	      var xhr = new XMLHttpRequest();
+	
+	      xhr.open(method, url, true);
+	
+	      xhr.send();
+	
+	      xhr.onload = function () {
+	        if (xhr.status === 200) {
+	          var data = JSON.parse(xhr.responseText);
+	
+	          success(data);
+	        } else {
+	          error(new Error(xhr.status + ':' + xhr.statusText));
+	        }
+	      };
+	
+	      xhr.onerror = function () {
+	        error(new Error(xhr.status + ':' + xhr.statusText));
+	      };
 	    }
 	  }]);
 	  return Page;

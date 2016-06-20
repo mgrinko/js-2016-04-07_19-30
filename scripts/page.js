@@ -39,28 +39,19 @@ class Page {
   }
 
   _loadPhonesByPattern(pattern = '') {
-    pattern = pattern.toLowerCase();
-
-    var xhr = new XMLHttpRequest();
-
-    xhr.open('GET', '/server/data/phones.json', true);  // async
-
-    xhr.send();
-
-    xhr.onload = function() {
-      var phones = JSON.parse(xhr.responseText);
-
-      phones = phones.filter(function(phone) {
-        let lowerPhoneName = phone.name.toLowerCase();
-
-        return lowerPhoneName.indexOf(pattern) !== -1;
-      });
-
-      this._renderPhones(phones);
-    }.bind(this);
+    this._sendRequest({
+      url: '/server/data/phones.json',
+      success: this._renderPhones.bind(this, pattern.toLowerCase())
+    });
   }
 
-  _renderPhones(phones) {
+  _renderPhones(pattern, phones) {
+    phones = phones.filter(function(phone) {
+      let lowerPhoneName = phone.name.toLowerCase();
+
+      return lowerPhoneName.indexOf(pattern) !== -1;
+    });
+
     this._phones = phones;
 
     this._catalogue.render(this._phones);
@@ -69,25 +60,44 @@ class Page {
   _onPhonesSelected(event) {
     let phoneId = event.detail;
 
-    var xhr = new XMLHttpRequest();
+    this._sendRequest({
+      url: `/server/data/phones/${phoneId}.json`,
+      success: this._showSelectedPhone.bind(this)
+    });
+  }
 
-    xhr.open('GET', `/server/data/phones/${phoneId}.json`, true);  // async
-
-    xhr.send();
-
-    xhr.onload = function() {
-      var phoneDetails = JSON.parse(xhr.responseText);
-
-      this._viewer.render(phoneDetails);
-      this._catalogue.hide();
-      this._viewer.show();
-    }.bind(this);
+  _showSelectedPhone(phoneDetails) {
+    this._viewer.render(phoneDetails);
+    this._catalogue.hide();
+    this._viewer.show();
   }
 
   _onValueChanged(event) {
     let phones = this._loadPhonesByPattern(event.detail);
 
     this._catalogue.render(phones);
+  }
+
+  _sendRequest({ url, method = 'GET', success, error = console.error }) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open(method, url, true);
+
+    xhr.send();
+
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var data = JSON.parse(xhr.responseText);
+
+        success(data);
+      } else {
+        error(new Error(xhr.status + ':' + xhr.statusText));
+      }
+    };
+
+    xhr.onerror = function() {
+      error(new Error(xhr.status + ':' + xhr.statusText));
+    };
   }
 }
 
