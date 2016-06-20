@@ -3,6 +3,7 @@
 const CLASSES = {
   hidden: 'js-hidden'
 };
+const compiledTemplate = require('./../templates/phoneCatalogue.hbs');
 
 class Viewer {
   constructor(options) {
@@ -18,8 +19,8 @@ class Viewer {
     this._el.classList.remove(CLASSES.hidden);
   }
 
-  render(phoneId) {
-    alert(phoneId);
+  render(phoneDetails) {
+    compiledTemplate(phoneDetails);
   }
 }
 

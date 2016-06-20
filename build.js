@@ -97,7 +97,7 @@
 	      element: this._el.querySelector('[data-component="phoneViewer"]')
 	    });
 	
-	    this._getPhonesByPattern();
+	    this._loadPhonesByPattern();
 	    this._viewer.hide();
 	
 	    this._catalogue.getElement().addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
@@ -106,9 +106,11 @@
 	  }
 	
 	  (0, _createClass3.default)(Page, [{
-	    key: '_getPhonesByPattern',
-	    value: function _getPhonesByPattern() {
+	    key: '_loadPhonesByPattern',
+	    value: function _loadPhonesByPattern() {
 	      var pattern = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	
+	      pattern = pattern.toLowerCase();
 	
 	      var xhr = new XMLHttpRequest();
 	
@@ -117,29 +119,47 @@
 	      xhr.send();
 	
 	      xhr.onload = function () {
-	        this._phones = JSON.parse(xhr.responseText);
-	        this._catalogue.render(this._phones);
+	        var phones = JSON.parse(xhr.responseText);
+	
+	        phones = phones.filter(function (phone) {
+	          var lowerPhoneName = phone.name.toLowerCase();
+	
+	          return lowerPhoneName.indexOf(pattern) !== -1;
+	        });
+	
+	        this._renderPhones(phones);
 	      }.bind(this);
+	    }
+	  }, {
+	    key: '_renderPhones',
+	    value: function _renderPhones(phones) {
+	      this._phones = phones;
 	
-	      xhr.onerror = function () {};
-	
-	      //pattern = pattern.toLowerCase();
-	      //
-	      //return phones.filter(function(phone) {
-	      //  let lowerPhoneName = phone.name.toLowerCase();
-	      //
-	      //  return lowerPhoneName.indexOf(pattern) !== -1;
-	      //});
+	      this._catalogue.render(this._phones);
 	    }
 	  }, {
 	    key: '_onPhonesSelected',
 	    value: function _onPhonesSelected(event) {
-	      this._viewer.render(event.detail);
+	      var phoneId = event.detail;
+	
+	      var xhr = new XMLHttpRequest();
+	
+	      xhr.open('GET', '/server/data/phones/' + phoneId + '.json', true); // async
+	
+	      xhr.send();
+	
+	      xhr.onload = function () {
+	        var phoneDetails = JSON.parse(xhr.responseText);
+	
+	        this._viewer.render(phoneDetails);
+	        this._catalogue.hide();
+	        this._viewer.show();
+	      }.bind(this);
 	    }
 	  }, {
 	    key: '_onValueChanged',
 	    value: function _onValueChanged(event) {
-	      var phones = this._getPhonesByPattern(event.detail);
+	      var phones = this._loadPhonesByPattern(event.detail);
 	
 	      this._catalogue.render(phones);
 	    }
@@ -545,6 +565,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var CLASSES = {
+	  hidden: 'js-hidden'
+	};
 	var compiledTemplate = __webpack_require__(25);
 	
 	var Catalogue = function () {
@@ -569,6 +592,16 @@
 	      this._el.innerHTML = compiledTemplate({
 	        phones: phones
 	      });
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this._el.classList.add(CLASSES.hidden);
+	    }
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      this._el.classList.remove(CLASSES.hidden);
 	    }
 	  }, {
 	    key: '_onPhoneClick',
@@ -1822,6 +1855,7 @@
 	var CLASSES = {
 	  hidden: 'js-hidden'
 	};
+	var compiledTemplate = __webpack_require__(25);
 	
 	var Viewer = function () {
 	  function Viewer(options) {
@@ -1842,8 +1876,8 @@
 	    }
 	  }, {
 	    key: 'render',
-	    value: function render(phoneId) {
-	      alert(phoneId);
+	    value: function render(phoneDetails) {
+	      compiledTemplate(phoneDetails);
 	    }
 	  }]);
 	  return Viewer;

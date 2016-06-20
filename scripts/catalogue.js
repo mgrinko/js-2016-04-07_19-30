@@ -1,5 +1,8 @@
 'use strict';
 
+const CLASSES = {
+  hidden: 'js-hidden'
+};
 const compiledTemplate = require('./../templates/phoneCatalogue.hbs');
 
 class Catalogue {
@@ -19,6 +22,14 @@ class Catalogue {
     this._el.innerHTML = compiledTemplate({
       phones: phones
     });
+  }
+
+  hide() {
+    this._el.classList.add(CLASSES.hidden);
+  }
+
+  show() {
+    this._el.classList.remove(CLASSES.hidden);
   }
 
   _onPhoneClick(event) {

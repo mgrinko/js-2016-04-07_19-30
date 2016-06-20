@@ -27,7 +27,7 @@ class Page {
       element: this._el.querySelector('[data-component="phoneViewer"]')
     });
 
-    this._getPhonesByPattern();
+    this._loadPhonesByPattern();
     this._viewer.hide();
 
 
@@ -38,7 +38,9 @@ class Page {
       .addEventListener('valueChanged', this._onValueChanged.bind(this));
   }
 
-  _getPhonesByPattern(pattern = '') {
+  _loadPhonesByPattern(pattern = '') {
+    pattern = pattern.toLowerCase();
+
     var xhr = new XMLHttpRequest();
 
     xhr.open('GET', '/server/data/phones.json', true);  // async
@@ -46,30 +48,44 @@ class Page {
     xhr.send();
 
     xhr.onload = function() {
-      this._phones = JSON.parse(xhr.responseText);
-      this._catalogue.render(this._phones);
+      var phones = JSON.parse(xhr.responseText);
+
+      phones = phones.filter(function(phone) {
+        let lowerPhoneName = phone.name.toLowerCase();
+
+        return lowerPhoneName.indexOf(pattern) !== -1;
+      });
+
+      this._renderPhones(phones);
     }.bind(this);
+  }
 
-    xhr.onerror = function() {
+  _renderPhones(phones) {
+    this._phones = phones;
 
-    };
-
-
-    //pattern = pattern.toLowerCase();
-    //
-    //return phones.filter(function(phone) {
-    //  let lowerPhoneName = phone.name.toLowerCase();
-    //
-    //  return lowerPhoneName.indexOf(pattern) !== -1;
-    //});
+    this._catalogue.render(this._phones);
   }
 
   _onPhonesSelected(event) {
-    this._viewer.render(event.detail);
+    let phoneId = event.detail;
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', `/server/data/phones/${phoneId}.json`, true);  // async
+
+    xhr.send();
+
+    xhr.onload = function() {
+      var phoneDetails = JSON.parse(xhr.responseText);
+
+      this._viewer.render(phoneDetails);
+      this._catalogue.hide();
+      this._viewer.show();
+    }.bind(this);
   }
 
   _onValueChanged(event) {
-    let phones = this._getPhonesByPattern(event.detail);
+    let phones = this._loadPhonesByPattern(event.detail);
 
     this._catalogue.render(phones);
   }

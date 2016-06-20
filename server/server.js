@@ -7,9 +7,7 @@ var file = new static.Server('.', {
 function accept(req, res) {
   console.log(req.url);
 
-  setTimeout(function() {
-    file.serve(req, res);
-  }, 3000);
+  file.serve(req, res);
 
   return;
 
