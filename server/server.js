@@ -6,8 +6,16 @@ var file = new static.Server('.', {
 
 function accept(req, res) {
   console.log(req.url);
-  file.serve(req, res);
+
+  setTimeout(function() {
+    file.serve(req, res);
+  }, 3000);
+
   return;
+
+
+
+
   if (req.url.slice(0, 6) === '/data/') {
     req.url = '/server' + req.url;
 

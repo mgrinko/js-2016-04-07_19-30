@@ -80,7 +80,6 @@
 	    (0, _classCallCheck3.default)(this, Page);
 	
 	    this._el = options.element;
-	    this._phones = this._getPhonesByPattern();
 	
 	    this._filter = new Filter({
 	      element: this._el.querySelector('[data-component="filter"]')
@@ -98,7 +97,7 @@
 	      element: this._el.querySelector('[data-component="phoneViewer"]')
 	    });
 	
-	    this._catalogue.render(this._phones);
+	    this._getPhonesByPattern();
 	    this._viewer.hide();
 	
 	    this._catalogue.getElement().addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
@@ -111,13 +110,26 @@
 	    value: function _getPhonesByPattern() {
 	      var pattern = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
 	
-	      pattern = pattern.toLowerCase();
+	      var xhr = new XMLHttpRequest();
 	
-	      return phones.filter(function (phone) {
-	        var lowerPhoneName = phone.name.toLowerCase();
+	      xhr.open('GET', '/server/data/phones.json', true); // async
 	
-	        return lowerPhoneName.indexOf(pattern) !== -1;
-	      });
+	      xhr.send();
+	
+	      xhr.onload = function () {
+	        this._phones = JSON.parse(xhr.responseText);
+	        this._catalogue.render(this._phones);
+	      }.bind(this);
+	
+	      xhr.onerror = function () {};
+	
+	      //pattern = pattern.toLowerCase();
+	      //
+	      //return phones.filter(function(phone) {
+	      //  let lowerPhoneName = phone.name.toLowerCase();
+	      //
+	      //  return lowerPhoneName.indexOf(pattern) !== -1;
+	      //});
 	    }
 	  }, {
 	    key: '_onPhonesSelected',

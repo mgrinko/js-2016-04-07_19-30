@@ -10,7 +10,6 @@ let phones = require("json!./../server/data/phones.json");
 class Page {
   constructor(options) {
     this._el = options.element;
-    this._phones = this._getPhonesByPattern();
 
     this._filter = new Filter({
       element: this._el.querySelector('[data-component="filter"]')
@@ -28,7 +27,7 @@ class Page {
       element: this._el.querySelector('[data-component="phoneViewer"]')
     });
 
-    this._catalogue.render(this._phones);
+    this._getPhonesByPattern();
     this._viewer.hide();
 
 
@@ -40,13 +39,29 @@ class Page {
   }
 
   _getPhonesByPattern(pattern = '') {
-    pattern = pattern.toLowerCase();
+    var xhr = new XMLHttpRequest();
 
-    return phones.filter(function(phone) {
-      let lowerPhoneName = phone.name.toLowerCase();
+    xhr.open('GET', '/server/data/phones.json', true);  // async
 
-      return lowerPhoneName.indexOf(pattern) !== -1;
-    });
+    xhr.send();
+
+    xhr.onload = function() {
+      this._phones = JSON.parse(xhr.responseText);
+      this._catalogue.render(this._phones);
+    }.bind(this);
+
+    xhr.onerror = function() {
+
+    };
+
+
+    //pattern = pattern.toLowerCase();
+    //
+    //return phones.filter(function(phone) {
+    //  let lowerPhoneName = phone.name.toLowerCase();
+    //
+    //  return lowerPhoneName.indexOf(pattern) !== -1;
+    //});
   }
 
   _onPhonesSelected(event) {
