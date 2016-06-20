@@ -1855,7 +1855,7 @@
 	var CLASSES = {
 	  hidden: 'js-hidden'
 	};
-	var compiledTemplate = __webpack_require__(25);
+	var compiledTemplate = __webpack_require__(47);
 	
 	var Viewer = function () {
 	  function Viewer(options) {
@@ -2044,6 +2044,26 @@
 			"snippet": "Motorola CHARM fits easily in your pocket or palm.  Includes MOTOBLUR service."
 		}
 	];
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(26);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+	
+	  return "<button>Back</button>\n\n<div class=\"phone-images\">\n  <img class=\"phone active\" src=\""
+	    + ((stack1 = alias1((depth0 != null ? depth0.imageUrl : depth0), depth0)) != null ? stack1 : "")
+	    + "\">\n</div>\n\n<h1>"
+	    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+	    + "</h1>\n<h2>"
+	    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+	    + "</h2>\n\n<p>"
+	    + alias2(alias1((depth0 != null ? depth0.snippet : depth0), depth0))
+	    + "</p>";
+	},"useData":true});
 
 /***/ }
 /******/ ]);

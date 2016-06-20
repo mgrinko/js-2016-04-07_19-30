@@ -3,7 +3,7 @@
 const CLASSES = {
   hidden: 'js-hidden'
 };
-const compiledTemplate = require('./../templates/phoneCatalogue.hbs');
+const compiledTemplate = require('./../templates/phoneViewer.hbs');
 
 class Viewer {
   constructor(options) {
