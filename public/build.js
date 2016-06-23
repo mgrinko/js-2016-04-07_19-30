@@ -104,13 +104,19 @@
 	    let requestPromise = this._sendRequest(`/data/phones/${phoneId}.json`);
 	    let mouseHasLeftPromise = this._createMouseHasLeftPromise();
 	
-	    Promise.all([requestPromise, mouseHasLeftPromise])
-	      .then(function(results) {
-	        this._showSelectedPhone(results[0]);
-	      }.bind(this))
-	      .catch(function(error) {
-	        console.error(error);
-	      });
+	    mouseHasLeftPromise
+	      .then(function() {
+	        return requestPromise;
+	      })
+	      .then(this._showSelectedPhone.bind(this));
+	
+	    //Promise.all([requestPromise, mouseHasLeftPromise])
+	    //  .then(function(results) {
+	    //    this._showSelectedPhone(results[0]);
+	    //  }.bind(this))
+	    //  .catch(function(error) {
+	    //    console.error(error);
+	    //  });
 	  }
 	
 	  _createMouseHasLeftPromise() {
