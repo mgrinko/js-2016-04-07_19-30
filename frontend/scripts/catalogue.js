@@ -10,6 +10,7 @@ class Catalogue {
     this._el = options.element;
 
     this._onPhoneClick = this._onPhoneClick.bind(this);
+    this._onPhoneMouseLeave = this._onPhoneMouseLeave.bind(this);
 
     this._el.addEventListener('click', this._onPhoneClick);
   }
@@ -37,9 +38,19 @@ class Catalogue {
       return;
     }
 
-    let phoneElement = event.target.closest('[data-element="phone"]');
+    this._phoneElement = event.target.closest('[data-element="phone"]');
 
-    this._triggerPhoneSelectedEvent(phoneElement.dataset.phoneId);
+    this._triggerPhoneSelectedEvent(this._phoneElement.dataset.phoneId);
+
+    this._phoneElement.onmouseleave = this._onPhoneMouseLeave;
+  }
+
+  _onPhoneMouseLeave() {
+    let event = new CustomEvent("mouseHasLeft");
+
+    this._el.dispatchEvent(event);
+
+    this._phoneElement.onmouseleave = null;
   }
 
   _triggerPhoneSelectedEvent(phoneId) {

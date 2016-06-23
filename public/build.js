@@ -98,21 +98,46 @@
 	      .addEventListener('valueChanged', this._onFilterValueChanged.bind(this));
 	  }
 	
+	
+	  _onPhonesSelected(event) {
+	    let phoneId = event.detail;
+	    let requestPromise = this._sendRequest(`/data/phones/${phoneId}.json`);
+	    let mouseHasLeftPromise = this._createMouseHasLeftPromise();
+	
+	    Promise.all([requestPromise, mouseHasLeftPromise])
+	      .then(function(results) {
+	        this._showSelectedPhone(results[0]);
+	      }.bind(this))
+	      .catch(function(error) {
+	        console.error(error);
+	      });
+	  }
+	
+	  _createMouseHasLeftPromise() {
+	    return new Promise(function(resolve, reject) {
+	
+	      this._catalogue.getElement()
+	        .addEventListener('mouseHasLeft', function() {
+	          resolve();
+	        }.bind(this));
+	
+	
+	    }.bind(this));
+	  }
+	
 	  _onBackToCatalogue() {
 	    this._loadPhonesAndRender(this._filter.getValue());
 	    this._viewer.hide();
 	  }
 	
 	  _loadPhonesAndRender(filterValue = '') {
-	    this._sendRequest({
-	      url: '/data/phones.json',
-	      success: function(phones) {
+	    this._sendRequest('/data/phones.json')
+	      .then(function(phones) {
 	        // ToDo: can be removed after server side fix
 	        phones = filterPhones(phones, filterValue.toLowerCase());
 	
 	        this._catalogue.render(phones);
-	      }.bind(this)
-	    });
+	      }.bind(this));
 	
 	    function filterPhones(phones, pattern) {
 	      return phones.filter(function(phone) {
@@ -121,15 +146,6 @@
 	        return lowerPhoneName.indexOf(pattern) !== -1;
 	      });
 	    }
-	  }
-	
-	  _onPhonesSelected(event) {
-	    let phoneId = event.detail;
-	
-	    this._sendRequest({
-	      url: `/data/phones/${phoneId}.json`,
-	      success: this._showSelectedPhone.bind(this)
-	    });
 	  }
 	
 	  _showSelectedPhone(phoneDetails) {
@@ -144,26 +160,28 @@
 	    this._loadPhonesAndRender(filterValue);
 	  }
 	
-	  _sendRequest({ url, method = 'GET', success, error = console.error }) {
-	    var xhr = new XMLHttpRequest();
+	  _sendRequest(url, { method = 'GET' } = {}) {
+	    return new Promise(function(resolve, reject) {
+	      var xhr = new XMLHttpRequest();
 	
-	    xhr.open(method, url, true);
+	      xhr.open(method, url, true);
 	
-	    xhr.send();
+	      xhr.send();
 	
-	    xhr.onload = function() {
-	      if (xhr.status === 200) {
-	        var data = JSON.parse(xhr.responseText);
+	      xhr.onload = function() {
+	        if (xhr.status === 200) {
+	          var data = JSON.parse(xhr.responseText);
 	
-	        success(data);
-	      } else {
-	        error(new Error(xhr.status + ':' + xhr.statusText));
-	      }
-	    };
+	          resolve(data);
+	        } else {
+	          reject(new Error(xhr.status + ':' + xhr.statusText));
+	        }
+	      };
 	
-	    xhr.onerror = function() {
-	      error(new Error(xhr.status + ':' + xhr.statusText));
-	    };
+	      xhr.onerror = function() {
+	        reject(new Error(xhr.status + ':' + xhr.statusText));
+	      };
+	    });
 	  }
 	}
 	
@@ -237,6 +255,7 @@
 	    this._el = options.element;
 	
 	    this._onPhoneClick = this._onPhoneClick.bind(this);
+	    this._onPhoneMouseLeave = this._onPhoneMouseLeave.bind(this);
 	
 	    this._el.addEventListener('click', this._onPhoneClick);
 	  }
@@ -264,9 +283,19 @@
 	      return;
 	    }
 	
-	    let phoneElement = event.target.closest('[data-element="phone"]');
+	    this._phoneElement = event.target.closest('[data-element="phone"]');
 	
-	    this._triggerPhoneSelectedEvent(phoneElement.dataset.phoneId);
+	    this._triggerPhoneSelectedEvent(this._phoneElement.dataset.phoneId);
+	
+	    this._phoneElement.onmouseleave = this._onPhoneMouseLeave;
+	  }
+	
+	  _onPhoneMouseLeave() {
+	    let event = new CustomEvent("mouseHasLeft");
+	
+	    this._el.dispatchEvent(event);
+	
+	    this._phoneElement.onmouseleave = null;
 	  }
 	
 	  _triggerPhoneSelectedEvent(phoneId) {
@@ -1513,7 +1542,7 @@
 	  }
 	
 	  render(phoneDetails) {
-	    compiledTemplate(phoneDetails);
+	    this._el.innerHTML = compiledTemplate(phoneDetails);
 	  }
 	
 	  getElement() {

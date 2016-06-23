@@ -20,7 +20,7 @@ class Viewer {
   }
 
   render(phoneDetails) {
-    compiledTemplate(phoneDetails);
+    this._el.innerHTML = compiledTemplate(phoneDetails);
   }
 
   getElement() {
