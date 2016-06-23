@@ -73,7 +73,7 @@
 	var Catalogue = __webpack_require__(24);
 	var Viewer = __webpack_require__(45);
 	
-	var phones = __webpack_require__(46);
+	var phones = __webpack_require__(47);
 	
 	var Page = function () {
 	  function Page(options) {
@@ -97,36 +97,36 @@
 	      element: this._el.querySelector('[data-component="phoneViewer"]')
 	    });
 	
-	    this._loadPhonesByPattern();
+	    this._loadPhonesAndRender();
 	    this._viewer.hide();
 	
 	    this._catalogue.getElement().addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
 	
-	    this._filter.getElement().addEventListener('valueChanged', this._onValueChanged.bind(this));
+	    this._filter.getElement().addEventListener('valueChanged', this._onFilterValueChanged.bind(this));
 	  }
 	
 	  (0, _createClass3.default)(Page, [{
-	    key: '_loadPhonesByPattern',
-	    value: function _loadPhonesByPattern() {
-	      var pattern = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	    key: '_loadPhonesAndRender',
+	    value: function _loadPhonesAndRender() {
+	      var filterValue = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
 	
 	      this._sendRequest({
 	        url: '/server/data/phones.json',
-	        success: this._renderPhones.bind(this, pattern.toLowerCase())
-	      });
-	    }
-	  }, {
-	    key: '_renderPhones',
-	    value: function _renderPhones(pattern, phones) {
-	      phones = phones.filter(function (phone) {
-	        var lowerPhoneName = phone.name.toLowerCase();
+	        success: function (phones) {
+	          // ToDo: can be removed after server side fix
+	          phones = filterPhones(phones, filterValue.toLowerCase());
 	
-	        return lowerPhoneName.indexOf(pattern) !== -1;
+	          this._catalogue.render(phones);
+	        }.bind(this)
 	      });
 	
-	      this._phones = phones;
+	      function filterPhones(phones, pattern) {
+	        return phones.filter(function (phone) {
+	          var lowerPhoneName = phone.name.toLowerCase();
 	
-	      this._catalogue.render(this._phones);
+	          return lowerPhoneName.indexOf(pattern) !== -1;
+	        });
+	      }
 	    }
 	  }, {
 	    key: '_onPhonesSelected',
@@ -146,11 +146,11 @@
 	      this._viewer.show();
 	    }
 	  }, {
-	    key: '_onValueChanged',
-	    value: function _onValueChanged(event) {
-	      var phones = this._loadPhonesByPattern(event.detail);
+	    key: '_onFilterValueChanged',
+	    value: function _onFilterValueChanged(event) {
+	      var filterValue = event.detail;
 	
-	      this._catalogue.render(phones);
+	      this._loadPhonesAndRender(filterValue);
 	    }
 	  }, {
 	    key: '_sendRequest',
@@ -536,7 +536,7 @@
 	  }, {
 	    key: '_triggerValueChangedEvent',
 	    value: function _triggerValueChangedEvent() {
-	      var event = new CustomEvent("valueChanged", {
+	      var event = new CustomEvent('valueChanged', {
 	        detail: this._field.value
 	      });
 	
@@ -1874,7 +1874,7 @@
 	var CLASSES = {
 	  hidden: 'js-hidden'
 	};
-	var compiledTemplate = __webpack_require__(47);
+	var compiledTemplate = __webpack_require__(46);
 	
 	var Viewer = function () {
 	  function Viewer(options) {
@@ -1906,6 +1906,26 @@
 
 /***/ },
 /* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(26);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+	
+	  return "<button>Back</button>\n\n<div class=\"phone-images\">\n  <img class=\"phone active\" src=\""
+	    + ((stack1 = alias1((depth0 != null ? depth0.imageUrl : depth0), depth0)) != null ? stack1 : "")
+	    + "\">\n</div>\n\n<h1>"
+	    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+	    + "</h1>\n<h2>"
+	    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+	    + "</h2>\n\n<p>"
+	    + alias2(alias1((depth0 != null ? depth0.snippet : depth0), depth0))
+	    + "</p>";
+	},"useData":true});
+
+/***/ },
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -2063,26 +2083,6 @@
 			"snippet": "Motorola CHARM fits easily in your pocket or palm.  Includes MOTOBLUR service."
 		}
 	];
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Handlebars = __webpack_require__(26);
-	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
-	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
-	
-	  return "<button>Back</button>\n\n<div class=\"phone-images\">\n  <img class=\"phone active\" src=\""
-	    + ((stack1 = alias1((depth0 != null ? depth0.imageUrl : depth0), depth0)) != null ? stack1 : "")
-	    + "\">\n</div>\n\n<h1>"
-	    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
-	    + "</h1>\n<h2>"
-	    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
-	    + "</h2>\n\n<p>"
-	    + alias2(alias1((depth0 != null ? depth0.snippet : depth0), depth0))
-	    + "</p>";
-	},"useData":true});
 
 /***/ }
 /******/ ]);

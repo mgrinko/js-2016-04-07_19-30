@@ -27,7 +27,7 @@ class Page {
       element: this._el.querySelector('[data-component="phoneViewer"]')
     });
 
-    this._loadPhonesByPattern();
+    this._loadPhonesAndRender();
     this._viewer.hide();
 
 
@@ -35,26 +35,27 @@ class Page {
       .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
 
     this._filter.getElement()
-      .addEventListener('valueChanged', this._onValueChanged.bind(this));
+      .addEventListener('valueChanged', this._onFilterValueChanged.bind(this));
   }
 
-  _loadPhonesByPattern(pattern = '') {
+  _loadPhonesAndRender(filterValue = '') {
     this._sendRequest({
       url: '/server/data/phones.json',
-      success: this._renderPhones.bind(this, pattern.toLowerCase())
-    });
-  }
+      success: function(phones) {
+        // ToDo: can be removed after server side fix
+        phones = filterPhones(phones, filterValue.toLowerCase());
 
-  _renderPhones(pattern, phones) {
-    phones = phones.filter(function(phone) {
-      let lowerPhoneName = phone.name.toLowerCase();
-
-      return lowerPhoneName.indexOf(pattern) !== -1;
+        this._catalogue.render(phones);
+      }.bind(this)
     });
 
-    this._phones = phones;
+    function filterPhones(phones, pattern) {
+      return phones.filter(function(phone) {
+        let lowerPhoneName = phone.name.toLowerCase();
 
-    this._catalogue.render(this._phones);
+        return lowerPhoneName.indexOf(pattern) !== -1;
+      });
+    }
   }
 
   _onPhonesSelected(event) {
@@ -72,10 +73,10 @@ class Page {
     this._viewer.show();
   }
 
-  _onValueChanged(event) {
-    let phones = this._loadPhonesByPattern(event.detail);
+  _onFilterValueChanged(event) {
+    let filterValue = event.detail;
 
-    this._catalogue.render(phones);
+    this._loadPhonesAndRender(filterValue);
   }
 
   _sendRequest({ url, method = 'GET', success, error = console.error }) {

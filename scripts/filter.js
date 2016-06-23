@@ -17,7 +17,7 @@ class Filter {
   }
 
   _triggerValueChangedEvent() {
-    let event = new CustomEvent("valueChanged", {
+    let event = new CustomEvent('valueChanged', {
       detail: this._field.value
     });
 
