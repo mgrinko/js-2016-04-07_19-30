@@ -5,22 +5,13 @@ var file = new static.Server('.', {
 });
 
 function accept(req, res) {
-  console.log(req.url);
-
-  file.serve(req, res);
-
-  return;
-
-
-
-
   if (req.url.slice(0, 6) === '/data/') {
-    req.url = '/server' + req.url;
-
     setTimeout(function() {
       file.serve(req, res);
-    }, 3000);
+    }, 1000);
   } else {
+    req.url = '/public' + req.url;
+
     file.serve(req, res);
   }
 }

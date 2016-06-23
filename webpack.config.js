@@ -4,9 +4,9 @@ let path = require('path');
 let webpack = require('webpack');
 
 module.exports = {
-  entry: "./scripts/app.js",
+  entry: "./frontend/scripts/app.js",
   output: {
-    path: __dirname,
+    path: path.join(__dirname, 'public'),
     filename: "build.js"
   },
 

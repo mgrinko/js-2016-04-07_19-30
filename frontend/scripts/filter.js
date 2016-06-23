@@ -8,6 +8,10 @@ class Filter {
     this._field.addEventListener('input', this._onFieldValueChange.bind(this));
   }
 
+  getValue() {
+    return this._field.value;
+  }
+
   getElement() {
     return this._el;
   }
@@ -18,7 +22,7 @@ class Filter {
 
   _triggerValueChangedEvent() {
     let event = new CustomEvent('valueChanged', {
-      detail: this._field.value
+      detail: this.getValue()
     });
 
     this._el.dispatchEvent(event);

@@ -5,8 +5,6 @@ let Sorter = require('./sorter.js');
 let Catalogue = require('./catalogue.js');
 let Viewer = require('./viewer.js');
 
-let phones = require("json!./../server/data/phones.json");
-
 class Page {
   constructor(options) {
     this._el = options.element;
@@ -34,13 +32,21 @@ class Page {
     this._catalogue.getElement()
       .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
 
+    this._viewer.getElement()
+      .addEventListener('back', this._onBackToCatalogue.bind(this));
+
     this._filter.getElement()
       .addEventListener('valueChanged', this._onFilterValueChanged.bind(this));
   }
 
+  _onBackToCatalogue() {
+    this._loadPhonesAndRender(this._filter.getValue());
+    this._viewer.hide();
+  }
+
   _loadPhonesAndRender(filterValue = '') {
     this._sendRequest({
-      url: '/server/data/phones.json',
+      url: '/data/phones.json',
       success: function(phones) {
         // ToDo: can be removed after server side fix
         phones = filterPhones(phones, filterValue.toLowerCase());
@@ -62,7 +68,7 @@ class Page {
     let phoneId = event.detail;
 
     this._sendRequest({
-      url: `/server/data/phones/${phoneId}.json`,
+      url: `/data/phones/${phoneId}.json`,
       success: this._showSelectedPhone.bind(this)
     });
   }
