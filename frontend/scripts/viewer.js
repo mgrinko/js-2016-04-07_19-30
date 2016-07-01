@@ -16,13 +16,7 @@ class Viewer extends BaseComponent {
   }
 
   _onBackButtonClick(event) {
-    this._triggerBackEvent();
-  }
-
-  _triggerBackEvent() {
-    let event = new CustomEvent('back');
-
-    this._el.dispatchEvent(event);
+    this.trigger('back');
   }
 }
 

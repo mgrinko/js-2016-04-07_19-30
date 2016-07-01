@@ -87,14 +87,11 @@
 	    this._loadPhones()
 	      .then(this._showPhones.bind(this));
 	
-	    this._catalogue.getElement()
-	      .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
+	    this._catalogue.on('phoneSelected', this._onPhonesSelected.bind(this));
 	
-	    this._viewer.getElement()
-	      .addEventListener('back', this._onBackToCatalogue.bind(this));
+	    this._viewer.on('back', this._onBackToCatalogue.bind(this));
 	
-	    this._filter.getElement()
-	      .addEventListener('valueChanged', this._onFilterValueChanged.bind(this));
+	    this._filter.on('valueChanged', this._onFilterValueChanged.bind(this));
 	  }
 	
 	
@@ -106,14 +103,6 @@
 	    mouseHasLeftPromise
 	      .then(() => requestPromise)
 	      .then(this._showSelectedPhone.bind(this));
-	
-	    //Promise.all([requestPromise, mouseHasLeftPromise])
-	    //  .then(results => {
-	    //    this._showSelectedPhone(results[0]);
-	    //  })
-	    //  .catch(function(error) {
-	    //    console.error(error);
-	    //  });
 	  }
 	
 	  _onFilterValueChanged(event) {
@@ -130,8 +119,7 @@
 	
 	  _createMouseHasLeftPromise() {
 	    return new Promise((resolve, reject) => {
-	      this._catalogue.getElement()
-	        .addEventListener('mouseHasLeft', () => { resolve() });
+	      this._catalogue.on('mouseHasLeft', () => { resolve() });
 	    });
 	  }
 	
@@ -261,7 +249,7 @@
 	    this._onPhoneClick = this._onPhoneClick.bind(this);
 	    this._onPhoneMouseLeave = this._onPhoneMouseLeave.bind(this);
 	
-	    this._el.addEventListener('click', this._onPhoneClick);
+	    this.on('click', '[data-element="phoneLink"]', this._onPhoneClick);
 	  }
 	
 	  render(phones) {
@@ -271,31 +259,17 @@
 	  }
 	
 	  _onPhoneClick(event) {
-	    if (!event.target.closest('[data-element="phoneLink"]')) {
-	      return;
-	    }
-	
 	    this._phoneElement = event.target.closest('[data-element="phone"]');
 	
-	    this._triggerPhoneSelectedEvent(this._phoneElement.dataset.phoneId);
+	    this.trigger('phoneSelected', this._phoneElement.dataset.phoneId);
 	
 	    this._phoneElement.onmouseleave = this._onPhoneMouseLeave;
 	  }
 	
 	  _onPhoneMouseLeave() {
-	    let event = new CustomEvent("mouseHasLeft");
-	
-	    this._el.dispatchEvent(event);
+	    this.trigger('mouseHasLeft');
 	
 	    this._phoneElement.onmouseleave = null;
-	  }
-	
-	  _triggerPhoneSelectedEvent(phoneId) {
-	    let event = new CustomEvent("phoneSelected", {
-	      detail: phoneId
-	    });
-	
-	    this._el.dispatchEvent(event);
 	  }
 	}
 	
@@ -1530,13 +1504,7 @@
 	  }
 	
 	  _onBackButtonClick(event) {
-	    this._triggerBackEvent();
-	  }
-	
-	  _triggerBackEvent() {
-	    let event = new CustomEvent('back');
-	
-	    this._el.dispatchEvent(event);
+	    this.trigger('back');
 	  }
 	}
 	
@@ -1602,6 +1570,18 @@
 	
 	      handler.call(this._el, event);
 	    });
+	  }
+	
+	  off(eventName, handler) {
+	    this._el.removeEventListener(eventName, handler);
+	  }
+	
+	  trigger(eventName, data) {
+	    let event = new CustomEvent(eventName, {
+	      detail: data
+	    });
+	
+	    this._el.dispatchEvent(event);
 	  }
 	}
 	

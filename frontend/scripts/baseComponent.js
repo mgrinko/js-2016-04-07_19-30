@@ -35,6 +35,18 @@ class BaseComponent {
       handler.call(this._el, event);
     });
   }
+
+  off(eventName, handler) {
+    this._el.removeEventListener(eventName, handler);
+  }
+
+  trigger(eventName, data) {
+    let event = new CustomEvent(eventName, {
+      detail: data
+    });
+
+    this._el.dispatchEvent(event);
+  }
 }
 
 module.exports = BaseComponent;

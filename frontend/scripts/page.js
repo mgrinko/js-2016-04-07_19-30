@@ -28,14 +28,11 @@ class Page {
     this._loadPhones()
       .then(this._showPhones.bind(this));
 
-    this._catalogue.getElement()
-      .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
+    this._catalogue.on('phoneSelected', this._onPhonesSelected.bind(this));
 
-    this._viewer.getElement()
-      .addEventListener('back', this._onBackToCatalogue.bind(this));
+    this._viewer.on('back', this._onBackToCatalogue.bind(this));
 
-    this._filter.getElement()
-      .addEventListener('valueChanged', this._onFilterValueChanged.bind(this));
+    this._filter.on('valueChanged', this._onFilterValueChanged.bind(this));
   }
 
 
@@ -47,14 +44,6 @@ class Page {
     mouseHasLeftPromise
       .then(() => requestPromise)
       .then(this._showSelectedPhone.bind(this));
-
-    //Promise.all([requestPromise, mouseHasLeftPromise])
-    //  .then(results => {
-    //    this._showSelectedPhone(results[0]);
-    //  })
-    //  .catch(function(error) {
-    //    console.error(error);
-    //  });
   }
 
   _onFilterValueChanged(event) {
@@ -71,8 +60,7 @@ class Page {
 
   _createMouseHasLeftPromise() {
     return new Promise((resolve, reject) => {
-      this._catalogue.getElement()
-        .addEventListener('mouseHasLeft', () => { resolve() });
+      this._catalogue.on('mouseHasLeft', () => { resolve() });
     });
   }
 
