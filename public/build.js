@@ -1522,7 +1522,7 @@
 	  constructor(options) {
 	    super(options.element);
 	
-	    this._el.addEventListener('click', this._onBackButtonClick.bind(this));
+	    this.on('click', '[data-element="backButton"]', this._onBackButtonClick.bind(this));
 	  }
 	
 	  render(phoneDetails) {
@@ -1530,10 +1530,6 @@
 	  }
 	
 	  _onBackButtonClick(event) {
-	    if (!event.target.closest('[data-element="backButton"]')) {
-	      return;
-	    }
-	
 	    this._triggerBackEvent();
 	  }
 	
@@ -1591,6 +1587,21 @@
 	
 	  show() {
 	    this._el.classList.remove(CLASSES.hidden);
+	  }
+	
+	  on(eventName, selector, handler) {
+	    if (typeof selector === 'function') {
+	      handler = selector;
+	      selector = null;
+	    }
+	
+	    this._el.addEventListener(eventName, event => {
+	      if (selector && !event.target.closest(selector)) {
+	        return;
+	      }
+	
+	      handler.call(this._el, event);
+	    });
 	  }
 	}
 	

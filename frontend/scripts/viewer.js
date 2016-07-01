@@ -8,7 +8,7 @@ class Viewer extends BaseComponent {
   constructor(options) {
     super(options.element);
 
-    this._el.addEventListener('click', this._onBackButtonClick.bind(this));
+    this.on('click', '[data-element="backButton"]', this._onBackButtonClick.bind(this));
   }
 
   render(phoneDetails) {
@@ -16,10 +16,6 @@ class Viewer extends BaseComponent {
   }
 
   _onBackButtonClick(event) {
-    if (!event.target.closest('[data-element="backButton"]')) {
-      return;
-    }
-
     this._triggerBackEvent();
   }
 

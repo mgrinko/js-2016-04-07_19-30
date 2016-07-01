@@ -20,6 +20,21 @@ class BaseComponent {
   show() {
     this._el.classList.remove(CLASSES.hidden);
   }
+
+  on(eventName, selector, handler) {
+    if (typeof selector === 'function') {
+      handler = selector;
+      selector = null;
+    }
+
+    this._el.addEventListener(eventName, event => {
+      if (selector && !event.target.closest(selector)) {
+        return;
+      }
+
+      handler.call(this._el, event);
+    });
+  }
 }
 
 module.exports = BaseComponent;
