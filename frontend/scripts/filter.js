@@ -1,8 +1,11 @@
 'use strict';
 
-class Filter {
+let BaseComponent = require('./baseComponent.js');
+
+class Filter extends BaseComponent {
   constructor(options) {
-    this._el = options.element;
+    super(options.element);
+
     this._field = this._el.querySelector('[data-element="filterField"]');
 
     this._field.addEventListener('input', this._onFieldValueChange.bind(this));
@@ -10,10 +13,6 @@ class Filter {
 
   getValue() {
     return this._field.value;
-  }
-
-  getElement() {
-    return this._el;
   }
 
   _onFieldValueChange(event) {

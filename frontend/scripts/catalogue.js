@@ -1,13 +1,12 @@
 'use strict';
 
-const CLASSES = {
-  hidden: 'js-hidden'
-};
+let BaseComponent = require('./baseComponent.js');
+
 const compiledTemplate = require('./../templates/phoneCatalogue.hbs');
 
-class Catalogue {
+class Catalogue extends BaseComponent {
   constructor(options) {
-    this._el = options.element;
+    super(options.element);
 
     this._onPhoneClick = this._onPhoneClick.bind(this);
     this._onPhoneMouseLeave = this._onPhoneMouseLeave.bind(this);
@@ -15,22 +14,10 @@ class Catalogue {
     this._el.addEventListener('click', this._onPhoneClick);
   }
 
-  getElement() {
-    return this._el;
-  }
-
   render(phones) {
     this._el.innerHTML = compiledTemplate({
       phones: phones
     });
-  }
-
-  hide() {
-    this._el.classList.add(CLASSES.hidden);
-  }
-
-  show() {
-    this._el.classList.remove(CLASSES.hidden);
   }
 
   _onPhoneClick(event) {

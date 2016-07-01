@@ -84,9 +84,8 @@
 	      element: this._el.querySelector('[data-component="phoneViewer"]')
 	    });
 	
-	    this._loadPhonesAndRender();
-	    this._viewer.hide();
-	
+	    this._loadPhones()
+	      .then(this._showPhones.bind(this));
 	
 	    this._catalogue.getElement()
 	      .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
@@ -105,45 +104,42 @@
 	    let mouseHasLeftPromise = this._createMouseHasLeftPromise();
 	
 	    mouseHasLeftPromise
-	      .then(function() {
-	        return requestPromise;
-	      })
+	      .then(() => requestPromise)
 	      .then(this._showSelectedPhone.bind(this));
 	
 	    //Promise.all([requestPromise, mouseHasLeftPromise])
-	    //  .then(function(results) {
+	    //  .then(results => {
 	    //    this._showSelectedPhone(results[0]);
-	    //  }.bind(this))
+	    //  })
 	    //  .catch(function(error) {
 	    //    console.error(error);
 	    //  });
 	  }
 	
-	  _createMouseHasLeftPromise() {
-	    return new Promise(function(resolve, reject) {
+	  _onFilterValueChanged(event) {
+	    let filterValue = event.detail;
 	
-	      this._catalogue.getElement()
-	        .addEventListener('mouseHasLeft', function() {
-	          resolve();
-	        }.bind(this));
-	
-	
-	    }.bind(this));
+	    this._loadPhones(filterValue)
+	      .then(this._showPhones.bind(this));
 	  }
 	
 	  _onBackToCatalogue() {
-	    this._loadPhonesAndRender(this._filter.getValue());
-	    this._viewer.hide();
+	    this._loadPhones(this._filter.getValue())
+	      .then(this._showPhones.bind(this));
 	  }
 	
-	  _loadPhonesAndRender(filterValue = '') {
-	    this._sendRequest('/data/phones.json')
-	      .then(function(phones) {
-	        // ToDo: can be removed after server side fix
-	        phones = filterPhones(phones, filterValue.toLowerCase());
+	  _createMouseHasLeftPromise() {
+	    return new Promise((resolve, reject) => {
+	      this._catalogue.getElement()
+	        .addEventListener('mouseHasLeft', () => { resolve() });
+	    });
+	  }
 	
-	        this._catalogue.render(phones);
-	      }.bind(this));
+	  _loadPhones(filterValue = '') {
+	    return this._sendRequest('/data/phones.json')
+	      .then(function(phones) {
+	        return filterPhones(phones, filterValue.toLowerCase());
+	      });
 	
 	    function filterPhones(phones, pattern) {
 	      return phones.filter(function(phone) {
@@ -154,19 +150,23 @@
 	    }
 	  }
 	
+	  _showPhones(phones) {
+	    this._catalogue.render(phones);
+	    this._viewer.hide();
+	    this._catalogue.show();
+	  }
+	
 	  _showSelectedPhone(phoneDetails) {
 	    this._viewer.render(phoneDetails);
 	    this._catalogue.hide();
 	    this._viewer.show();
 	  }
 	
-	  _onFilterValueChanged(event) {
-	    let filterValue = event.detail;
-	
-	    this._loadPhonesAndRender(filterValue);
-	  }
-	
 	  _sendRequest(url, { method = 'GET' } = {}) {
+	    return fetch(url)
+	      .then(response => response.text())
+	      .then(textResponse => JSON.parse(textResponse));
+	
 	    return new Promise(function(resolve, reject) {
 	      var xhr = new XMLHttpRequest();
 	
@@ -195,13 +195,16 @@
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	class Filter {
+	let BaseComponent = __webpack_require__(27);
+	
+	class Filter extends BaseComponent {
 	  constructor(options) {
-	    this._el = options.element;
+	    super(options.element);
+	
 	    this._field = this._el.querySelector('[data-element="filterField"]');
 	
 	    this._field.addEventListener('input', this._onFieldValueChange.bind(this));
@@ -209,10 +212,6 @@
 	
 	  getValue() {
 	    return this._field.value;
-	  }
-	
-	  getElement() {
-	    return this._el;
 	  }
 	
 	  _onFieldValueChange(event) {
@@ -251,14 +250,13 @@
 
 	'use strict';
 	
-	const CLASSES = {
-	  hidden: 'js-hidden'
-	};
+	let BaseComponent = __webpack_require__(27);
+	
 	const compiledTemplate = __webpack_require__(5);
 	
-	class Catalogue {
+	class Catalogue extends BaseComponent {
 	  constructor(options) {
-	    this._el = options.element;
+	    super(options.element);
 	
 	    this._onPhoneClick = this._onPhoneClick.bind(this);
 	    this._onPhoneMouseLeave = this._onPhoneMouseLeave.bind(this);
@@ -266,22 +264,10 @@
 	    this._el.addEventListener('click', this._onPhoneClick);
 	  }
 	
-	  getElement() {
-	    return this._el;
-	  }
-	
 	  render(phones) {
 	    this._el.innerHTML = compiledTemplate({
 	      phones: phones
 	    });
-	  }
-	
-	  hide() {
-	    this._el.classList.add(CLASSES.hidden);
-	  }
-	
-	  show() {
-	    this._el.classList.remove(CLASSES.hidden);
 	  }
 	
 	  _onPhoneClick(event) {
@@ -1528,31 +1514,19 @@
 
 	'use strict';
 	
-	const CLASSES = {
-	  hidden: 'js-hidden'
-	};
+	let BaseComponent = __webpack_require__(27);
+	
 	const compiledTemplate = __webpack_require__(26);
 	
-	class Viewer {
+	class Viewer extends BaseComponent {
 	  constructor(options) {
-	    this._el = options.element;
+	    super(options.element);
+	
 	    this._el.addEventListener('click', this._onBackButtonClick.bind(this));
-	  }
-	
-	  hide() {
-	    this._el.classList.add(CLASSES.hidden);
-	  }
-	
-	  show() {
-	    this._el.classList.remove(CLASSES.hidden);
 	  }
 	
 	  render(phoneDetails) {
 	    this._el.innerHTML = compiledTemplate(phoneDetails);
-	  }
-	
-	  getElement() {
-	    return this._el;
 	  }
 	
 	  _onBackButtonClick(event) {
@@ -1581,16 +1555,46 @@
 	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 	
-	  return "<button data-element=\"backButton\">Back 122</button>\n\n<div class=\"phone-images\">\n  <img class=\"phone active\" src=\""
-	    + ((stack1 = alias1((depth0 != null ? depth0.imageUrl : depth0), depth0)) != null ? stack1 : "")
+	  return "<button data-element=\"backButton\">Back</button>\n\n<div class=\"phone-images\">\n  <img class=\"phone active\" src=\""
+	    + ((stack1 = alias1(((stack1 = (depth0 != null ? depth0.images : depth0)) != null ? stack1["0"] : stack1), depth0)) != null ? stack1 : "")
 	    + "\">\n</div>\n\n<h1>"
 	    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
 	    + "</h1>\n<h2>"
 	    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
 	    + "</h2>\n\n<p>"
-	    + alias2(alias1((depth0 != null ? depth0.snippet : depth0), depth0))
+	    + alias2(alias1((depth0 != null ? depth0.description : depth0), depth0))
 	    + "</p>";
 	},"useData":true});
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	const CLASSES = {
+	  hidden: 'js-hidden'
+	};
+	
+	class BaseComponent {
+	  constructor(el) {
+	    this._el = el;
+	  }
+	
+	  getElement() {
+	    return this._el;
+	  }
+	
+	  hide() {
+	    this._el.classList.add(CLASSES.hidden);
+	  }
+	
+	  show() {
+	    this._el.classList.remove(CLASSES.hidden);
+	  }
+	}
+	
+	module.exports = BaseComponent;
 
 /***/ }
 /******/ ]);

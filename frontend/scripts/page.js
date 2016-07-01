@@ -25,9 +25,8 @@ class Page {
       element: this._el.querySelector('[data-component="phoneViewer"]')
     });
 
-    this._loadPhonesAndRender();
-    this._viewer.hide();
-
+    this._loadPhones()
+      .then(this._showPhones.bind(this));
 
     this._catalogue.getElement()
       .addEventListener('phoneSelected', this._onPhonesSelected.bind(this));
@@ -46,45 +45,42 @@ class Page {
     let mouseHasLeftPromise = this._createMouseHasLeftPromise();
 
     mouseHasLeftPromise
-      .then(function() {
-        return requestPromise;
-      })
+      .then(() => requestPromise)
       .then(this._showSelectedPhone.bind(this));
 
     //Promise.all([requestPromise, mouseHasLeftPromise])
-    //  .then(function(results) {
+    //  .then(results => {
     //    this._showSelectedPhone(results[0]);
-    //  }.bind(this))
+    //  })
     //  .catch(function(error) {
     //    console.error(error);
     //  });
   }
 
-  _createMouseHasLeftPromise() {
-    return new Promise(function(resolve, reject) {
+  _onFilterValueChanged(event) {
+    let filterValue = event.detail;
 
-      this._catalogue.getElement()
-        .addEventListener('mouseHasLeft', function() {
-          resolve();
-        }.bind(this));
-
-
-    }.bind(this));
+    this._loadPhones(filterValue)
+      .then(this._showPhones.bind(this));
   }
 
   _onBackToCatalogue() {
-    this._loadPhonesAndRender(this._filter.getValue());
-    this._viewer.hide();
+    this._loadPhones(this._filter.getValue())
+      .then(this._showPhones.bind(this));
   }
 
-  _loadPhonesAndRender(filterValue = '') {
-    this._sendRequest('/data/phones.json')
-      .then(function(phones) {
-        // ToDo: can be removed after server side fix
-        phones = filterPhones(phones, filterValue.toLowerCase());
+  _createMouseHasLeftPromise() {
+    return new Promise((resolve, reject) => {
+      this._catalogue.getElement()
+        .addEventListener('mouseHasLeft', () => { resolve() });
+    });
+  }
 
-        this._catalogue.render(phones);
-      }.bind(this));
+  _loadPhones(filterValue = '') {
+    return this._sendRequest('/data/phones.json')
+      .then(function(phones) {
+        return filterPhones(phones, filterValue.toLowerCase());
+      });
 
     function filterPhones(phones, pattern) {
       return phones.filter(function(phone) {
@@ -95,19 +91,23 @@ class Page {
     }
   }
 
+  _showPhones(phones) {
+    this._catalogue.render(phones);
+    this._viewer.hide();
+    this._catalogue.show();
+  }
+
   _showSelectedPhone(phoneDetails) {
     this._viewer.render(phoneDetails);
     this._catalogue.hide();
     this._viewer.show();
   }
 
-  _onFilterValueChanged(event) {
-    let filterValue = event.detail;
-
-    this._loadPhonesAndRender(filterValue);
-  }
-
   _sendRequest(url, { method = 'GET' } = {}) {
+    return fetch(url)
+      .then(response => response.text())
+      .then(textResponse => JSON.parse(textResponse));
+
     return new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest();
 
